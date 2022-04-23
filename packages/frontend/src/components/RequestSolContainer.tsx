@@ -2,10 +2,11 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { getValue } from "@testing-library/user-event/dist/utils";
 import { FC, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { PhantomProvider, WindowWithSolana } from "../types";
 
-interface RequestSolContainerProps {}
+declare const window: WindowWithSolana;
 
-const RequestSolContainer: FC<RequestSolContainerProps> = (props) => {
+const RequestSolContainer: FC = (props) => {
   const { control, getValues, watch } = useFormContext();
   return (
     <Box display="flex" flexDirection="column">
@@ -31,14 +32,18 @@ const RequestSolContainer: FC<RequestSolContainerProps> = (props) => {
       <Button
         disabled={!watch("requestSolWalletAddress") || undefined}
         variant="contained"
-        type="submit"
         sx={(theme) => ({
           marginTop: theme.spacing(2),
-          maxWidth: theme.spacing(20),
+          minWidth: theme.spacing(20),
+          width: "auto",
           [theme.breakpoints.up("sm")]: {
+            maxWidth: theme.spacing(20),
             alignSelf: "end",
           },
         })}
+        onClick={() => {
+          console.log(window.solana?.publicKey.toString());
+        }}
       >
         Request 1 Sol
       </Button>

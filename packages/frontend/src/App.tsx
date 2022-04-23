@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
   CreateTokenContainer,
   ManageTokenContainer,
   RequestSolContainer,
+  ConnectWalletButton,
 } from "./components";
 
 interface TabPanelProps {
@@ -44,7 +45,6 @@ const App: FC = () => {
   const methods = useForm();
   const onSubmit = (data: any) => console.log(data);
   const theme = useTheme();
-  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -73,63 +73,41 @@ const App: FC = () => {
           <Box
             sx={(theme) => ({
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "column-reverse",
+              [theme.breakpoints.up("sm")]: {
+                flexDirection: "row",
+              },
               padding: theme.spacing(2),
               maxWidth: { xs: "calc(100vw - 48px)", sm: 900 },
             })}
           >
-            {!isSmUp && (
-              <Button
-                variant="contained"
-                sx={(theme) => ({
-                  borderRadius: theme.spacing(4),
-                  marginBottom: theme.spacing(1),
-                })}
-              >
-                Connect Wallet
-              </Button>
-            )}
-            <Box display="flex">
-              <Tabs
-                allowScrollButtonsMobile
-                orientation="horizontal"
-                variant="scrollable"
-                scrollButtons="auto"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs example"
-                sx={{ borderBottom: 1, borderColor: "divider" }}
-              >
-                <Tab label="REQUEST SOL" />
-                <Tab label="CREATE TOKEN" />
-                <Tab label="MANAGE TOKEN" />
-              </Tabs>
-              {isSmUp && (
-                <Button
-                  variant="contained"
-                  sx={(theme) => ({
-                    ml: 3,
-                    borderRadius: theme.spacing(4),
-                  })}
-                >
-                  Connect Wallet
-                </Button>
-              )}
-            </Box>
+            <Tabs
+              allowScrollButtonsMobile
+              orientation="horizontal"
+              variant="scrollable"
+              scrollButtons="auto"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderBottom: 1, borderColor: "divider" }}
+            >
+              <Tab label="REQUEST SOL" />
+              <Tab label="CREATE TOKEN" />
+              <Tab label="MANAGE TOKEN" />
+            </Tabs>
+            <ConnectWalletButton />
           </Box>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Box sx={(theme) => ({ padding: theme.spacing(3) })}>
-              <TabPanel value={value} index={0}>
-                <RequestSolContainer />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <CreateTokenContainer />
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <ManageTokenContainer />
-              </TabPanel>
-            </Box>
-          </form>
+          <Box sx={(theme) => ({ padding: theme.spacing(3) })}>
+            <TabPanel value={value} index={0}>
+              <RequestSolContainer />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <CreateTokenContainer />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <ManageTokenContainer />
+            </TabPanel>
+          </Box>
         </Paper>
       </Box>
     </FormProvider>

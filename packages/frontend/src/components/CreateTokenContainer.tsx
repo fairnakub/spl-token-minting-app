@@ -8,8 +8,8 @@ const CreateTokenContainer: FC<CreateTokenContainerProps> = (props) => {
   const { control, getValues, watch } = useFormContext();
 
   const isDisabled = () => {
-    const isMintAuthEmpty = !watch("mintAuthorityPubkey") || undefined;
-    const isFreezeAuthEmpty = !watch("freezeAuthorityPubkey") || undefined;
+    const isMintAuthEmpty = !watch("mintAuthorityPubkey");
+    const isFreezeAuthEmpty = !watch("freezeAuthorityPubkey");
     return isMintAuthEmpty || isFreezeAuthEmpty;
   };
 
@@ -57,8 +57,10 @@ const CreateTokenContainer: FC<CreateTokenContainerProps> = (props) => {
         type="submit"
         sx={(theme) => ({
           marginTop: theme.spacing(2),
-          maxWidth: theme.spacing(20),
+          minWidth: theme.spacing(20),
+          width: "auto",
           [theme.breakpoints.up("sm")]: {
+            maxWidth: theme.spacing(20),
             alignSelf: "end",
           },
         })}

@@ -41,6 +41,7 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
           minWidth: theme.spacing(20),
           width: "auto",
           [theme.breakpoints.up("sm")]: {
+            maxWidth: theme.spacing(20),
             alignSelf: "end",
           },
         })}
@@ -86,8 +87,8 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             rules={{ required: true, pattern: /^[0-9]+/i }}
           />
           <Button
+            disabled={!watch("mintAmount")}
             variant="contained"
-            type="submit"
             sx={(theme) => ({
               marginTop: theme.spacing(2),
               minWidth: theme.spacing(20),
@@ -119,8 +120,8 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             rules={{ required: true }}
           />
           <Button
+            disabled={!watch("burnAmount")}
             variant="contained"
-            type="submit"
             sx={(theme) => ({
               marginTop: theme.spacing(2),
               minWidth: theme.spacing(20),
@@ -168,8 +169,8 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             rules={{ required: true }}
           />
           <Button
+            disabled={!watch("airdropAmount") || !watch("airdropTargetAddress")}
             variant="contained"
-            type="submit"
             sx={(theme) => ({
               marginTop: theme.spacing(2),
               minWidth: theme.spacing(20),
