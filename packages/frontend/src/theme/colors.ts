@@ -1,5 +1,5 @@
 export const colors = {
-  common: {
-    default: "#f0f2f5",
+  primary: {
+    main: "#2e2e2e",
   },
 };

@@ -1,7 +1,8 @@
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
-import { FC, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { Input } from "../config/constants";
 
 interface ManageTokenContainerProps {}
 
@@ -13,105 +14,18 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
       <Typography variant="h5" fontWeight="bold">
         Manage Token
       </Typography>
-
-      <Controller
-        name="manageTokenTokenAddress"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField
-            {...field}
-            required
-            disabled={isTokenConfirmed}
-            label="Token address"
-            sx={(theme) => ({
-              marginTop: theme.spacing(2),
-            })}
-          />
-        )}
-        rules={{ required: true }}
-      />
-
-      <Button
-        disabled={isTokenConfirmed || !watch("manageTokenTokenAddress")}
-        variant="contained"
-        type="submit"
-        sx={(theme) => ({
-          marginTop: theme.spacing(2),
-          minWidth: theme.spacing(20),
-          width: "auto",
-          [theme.breakpoints.up("sm")]: {
-            maxWidth: theme.spacing(20),
-            alignSelf: "end",
-          },
-        })}
-        onClick={() => {
-          setTokenConfirm(true);
-        }}
-      >
-        Confirm
-      </Button>
-
-      {isTokenConfirmed && (
-        <>
-          <Divider sx={{ mt: 3, mb: 2 }} />
-          <Typography variant="h6" fontWeight="bold">
-            Token detail
-          </Typography>
-          <Box display="flex">
-            <Typography variant="body1">Token address:&nbsp;</Typography>
-            <Typography variant="body1">asdasdasd</Typography>
-          </Box>
-          <Box display="flex">
-            <Typography variant="body1">Total supply:&nbsp;</Typography>
-            <Typography variant="body1">asdasdasd</Typography>
-          </Box>
-          <Divider sx={{ mt: 3, mb: 2 }} />
-          <Typography variant="h6" fontWeight="bold">
-            Mint
-          </Typography>
+      {!isTokenConfirmed && (
+        <Fragment>
           <Controller
-            name="mintAmount"
+            name={Input.ManageTokenTokenAddress}
             control={control}
             defaultValue=""
             render={({ field }) => (
               <TextField
                 {...field}
                 required
-                label="Mint amount"
-                sx={(theme) => ({
-                  marginTop: theme.spacing(2),
-                })}
-              />
-            )}
-            rules={{ required: true, pattern: /^[0-9]+/i }}
-          />
-          <Button
-            disabled={!watch("mintAmount")}
-            variant="contained"
-            sx={(theme) => ({
-              marginTop: theme.spacing(2),
-              minWidth: theme.spacing(20),
-              [theme.breakpoints.up("sm")]: {
-                alignSelf: "end",
-              },
-            })}
-          >
-            Mint
-          </Button>
-          <Divider sx={{ mt: 3, mb: 2 }} />
-          <Typography variant="h6" fontWeight="bold">
-            Burn
-          </Typography>
-          <Controller
-            name="burnAmount"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                label="Burn amount"
+                disabled={isTokenConfirmed}
+                label="Token address"
                 sx={(theme) => ({
                   marginTop: theme.spacing(2),
                 })}
@@ -119,25 +33,143 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             )}
             rules={{ required: true }}
           />
+
           <Button
-            disabled={!watch("burnAmount")}
+            disabled={isTokenConfirmed || !watch(Input.ManageTokenTokenAddress)}
             variant="contained"
+            type="submit"
             sx={(theme) => ({
               marginTop: theme.spacing(2),
               minWidth: theme.spacing(20),
+              width: "auto",
               [theme.breakpoints.up("sm")]: {
+                maxWidth: theme.spacing(22),
                 alignSelf: "end",
               },
             })}
+            onClick={() => {
+              setTokenConfirm(true);
+            }}
           >
-            Burn
+            Next
           </Button>
+        </Fragment>
+      )}
+
+      {isTokenConfirmed && (
+        <Fragment>
           <Divider sx={{ mt: 3, mb: 2 }} />
           <Typography variant="h6" fontWeight="bold">
-            Mint and send to an address
+            Token detail
+          </Typography>
+          <Box display="flex">
+            <Typography variant="body1">Token address:&nbsp;</Typography>
+            <Typography variant="body1">
+              {getValues(Input.ManageTokenTokenAddress)}
+            </Typography>
+          </Box>
+          <Box display="flex">
+            <Typography variant="body1">Total supply:&nbsp;</Typography>
+            <Typography variant="body1">asdasdasd</Typography>
+          </Box>
+          <Divider sx={{ mt: 3, mb: 2 }} />
+          <Box
+            display="flex"
+            sx={(theme) => ({
+              [theme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+              },
+            })}
+          >
+            <Box
+              flex={1}
+              sx={(theme) => ({
+                [theme.breakpoints.up("sm")]: {
+                  paddingRight: "12px",
+                },
+              })}
+            >
+              <Typography variant="h6" fontWeight="bold">
+                Mint
+              </Typography>
+              <Controller
+                name={Input.MintAmount}
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    required
+                    label="Mint amount"
+                    sx={(theme) => ({
+                      marginTop: theme.spacing(2),
+                      width: "100%",
+                    })}
+                  />
+                )}
+                rules={{ required: true, pattern: /^[0-9]+/i }}
+              />
+              <Button
+                disabled={!watch("mintAmount")}
+                variant="contained"
+                sx={(theme) => ({
+                  marginTop: theme.spacing(2),
+                  minWidth: theme.spacing(20),
+                  width: "100%",
+                })}
+              >
+                Mint
+              </Button>
+            </Box>
+            <Box
+              flex={1}
+              sx={(theme) => ({
+                paddingLeft: theme.spacing(1.5),
+                [theme.breakpoints.down("sm")]: {
+                  paddingLeft: 0,
+                  paddingTop: theme.spacing(2),
+                },
+              })}
+            >
+              <Typography variant="h6" fontWeight="bold">
+                Burn
+              </Typography>
+              <Controller
+                name={Input.BurnAmount}
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    required
+                    label="Burn amount"
+                    sx={(theme) => ({
+                      marginTop: theme.spacing(2),
+                      width: "100%",
+                    })}
+                  />
+                )}
+                rules={{ required: true }}
+              />
+              <Button
+                disabled={!watch("burnAmount")}
+                variant="contained"
+                sx={(theme) => ({
+                  marginTop: theme.spacing(2),
+                  minWidth: theme.spacing(20),
+                  width: "100%",
+                })}
+              >
+                Burn
+              </Button>
+            </Box>
+          </Box>
+          <Divider sx={{ mt: 3, mb: 2 }} />
+          <Typography variant="h6" fontWeight="bold">
+            Airdrop (mint and send to an address in one action)
           </Typography>
           <Controller
-            name="airdropTargetAddress"
+            name={Input.AirdropTargetAddress}
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -153,7 +185,7 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             rules={{ required: true }}
           />
           <Controller
-            name="airdropAmount"
+            name={Input.AirdropAmount}
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -169,7 +201,9 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
             rules={{ required: true }}
           />
           <Button
-            disabled={!watch("airdropAmount") || !watch("airdropTargetAddress")}
+            disabled={
+              !watch(Input.AirdropAmount) || !watch(Input.AirdropTargetAddress)
+            }
             variant="contained"
             sx={(theme) => ({
               marginTop: theme.spacing(2),
@@ -191,13 +225,13 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
               },
             })}
             onClick={() => {
-              setValue("manageTokenTokenAddress", "");
+              setValue(Input.ManageTokenTokenAddress, "");
               setTokenConfirm(false);
             }}
           >
-            Close
+            Back
           </Button>
-        </>
+        </Fragment>
       )}
     </Box>
   );
