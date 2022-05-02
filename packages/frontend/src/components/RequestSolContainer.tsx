@@ -1,33 +1,22 @@
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import {
-  clusterApiUrl,
-  Connection,
-  Keypair,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-} from "@solana/web3.js";
-import {
-  Alert,
-  AlertColor,
   Box,
   Button,
   CircularProgress,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
-import { getValue } from "@testing-library/user-event/dist/utils";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { PhantomProvider, WindowWithSolana } from "../types";
 import connection from "../config/connection";
 import { Input, Status } from "../config/constants";
-import openInNewTab from "../utils/openInNewTab";
+import { useDispatch } from "react-redux";
+import { displaySnackbar } from "../redux/coreSlice";
 
 const RequestSolContainer: FC = (props) => {
   const { control, getValues, watch } = useFormContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<string>("");
-  const [status, setStatus] = useState<Status>();
+  const dispatch = useDispatch();
 
   const onRequestAirdrop = useCallback(async () => {
     setIsLoading(true);
@@ -40,49 +29,31 @@ const RequestSolContainer: FC = (props) => {
           publicKey,
           LAMPORTS_PER_SOL
         );
-        console.log(txn);
+
         await connection.confirmTransaction(txn);
-        setResult(txn);
-        setStatus(Status.Success);
+        dispatch(
+          displaySnackbar({
+            type: Status.Success,
+            title: "Successful!",
+            transaction: txn,
+          })
+        );
       }
     } catch (e: any) {
-      setStatus(Status.Error);
-      setResult(e.message);
-      console.log(e);
+      dispatch(
+        displaySnackbar({
+          type: Status.Error,
+          title: "Failed!",
+          message: e.message,
+        })
+      );
     } finally {
       setIsLoading(false);
     }
-  }, [getValues]);
+  }, [dispatch, getValues]);
 
   return (
     <Box display="flex" flexDirection="column">
-      {status && (
-        <Alert
-          severity={status as AlertColor}
-          sx={(theme) => ({ marginBottom: theme.spacing(2) })}
-          onClose={() => {
-            setStatus(undefined);
-          }}
-        >
-          {status === Status.Success ? (
-            <>
-              Successful!&nbsp;
-              <Link
-                sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  openInNewTab(
-                    `https://explorer.solana.com/tx/${result}?cluster=devnet`
-                  );
-                }}
-              >
-                view txn
-              </Link>
-            </>
-          ) : (
-            <>Failed! {result}</>
-          )}
-        </Alert>
-      )}
       <Typography variant="h5" fontWeight="bold">
         Request Sol
       </Typography>

@@ -8,6 +8,7 @@ export enum Input {
   BurnAmount = "burnAmount",
   AirdropTargetAddress = "airdropTargetAddress",
   AirdropAmount = "airdropAmount",
+  MintToAnotherAddress = "mintToAnotherAddress",
 }
 
 export enum Status {
