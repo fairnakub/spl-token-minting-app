@@ -5,7 +5,7 @@
 Run the following code (in the root directory):
 
 ```bash
-1. git clone [https://github.com/fairnakub/spl-token-minting-app.git](https://github.com/fairnakub/spl-token-minting-app.git)
+1. git clone https://github.com/fairnakub/spl-token-minting-app.git
 2. cd spl-token-minting-app
 3. yarn install
 (4. yarn global add lerna)
