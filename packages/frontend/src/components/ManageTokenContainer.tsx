@@ -72,10 +72,18 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
     } catch (e: any) {
       setTokenConfirm(false);
       setTokenDetail(undefined);
+      dispatch(
+        displaySnackbar({
+          type: "error",
+          title: "Failed!",
+          message: "The token address is incorrect",
+        })
+      );
+      console.log(e);
     } finally {
       setIsLoading(false);
     }
-  }, [connection, getValues]);
+  }, [connection, dispatch, getValues]);
 
   const mintHandler = useCallback(async () => {
     if (tokenDetail && publicKey) {
@@ -569,68 +577,6 @@ const ManageTokenContainer: FC<ManageTokenContainerProps> = (props) => {
               </Button>
             </Box>
           </Box>
-          {/* <Divider sx={{ mt: 3, mb: 2 }} />
-          <Typography variant="h6" fontWeight="bold">
-            Airdrop (mint and send to an address in one action)
-          </Typography>
-          <Controller
-            name={Input.AirdropTargetAddress}
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                disabled={isAirdroping}
-                label="Target address"
-                sx={(theme) => ({
-                  marginTop: theme.spacing(2),
-                })}
-              />
-            )}
-            rules={{ required: true }}
-          />
-          <Controller
-            name={Input.AirdropAmount}
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <TextField
-                {...field}
-                disabled={isAirdroping}
-                required
-                type="number"
-                label="Amount"
-                sx={(theme) => ({
-                  marginTop: theme.spacing(2),
-                })}
-              />
-            )}
-            rules={{ required: true }}
-          />
-          <Button
-            disabled={
-              !watch(Input.AirdropAmount) ||
-              !watch(Input.AirdropTargetAddress) ||
-              isAirdroping
-            }
-            variant="contained"
-            sx={(theme) => ({
-              marginTop: theme.spacing(2),
-              minWidth: theme.spacing(20),
-              [theme.breakpoints.up("sm")]: {
-                alignSelf: "end",
-              },
-            })}
-            onClick={airdropHandler}
-          >
-            {isAirdroping && (
-              <CircularProgress
-                style={{ width: "15px", height: "15px", marginRight: "8px" }}
-              />
-            )}
-            Confirm
-          </Button> */}
           <Divider sx={{ mt: 3, mb: 3 }} />
           <Button
             variant="outlined"
