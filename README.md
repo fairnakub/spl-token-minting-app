@@ -5,17 +5,15 @@
 Run the following code (in the root directory):
 
 ```bash
-yarn install
-# or
-npm install
-
-# and then
-npx lerna bootstrap
-
-# and then
-npm start
-# or
-yarn start
+1. git clone [https://github.com/fairnakub/spl-token-minting-app.git](https://github.com/fairnakub/spl-token-minting-app.git)
+2. cd spl-token-minting-app
+3. yarn install
+(4. yarn global add lerna)
+5. lerna bootstrap
+6. yarn start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and [http://localhost:3333](http://localhost:3333) with your browser to see the running Frontend and Backend Apps respectively.
+Open [http://localhost:3000](http://localhost:3000) on your browser with Phantom Wallet installed.
+
+Check this out for a brief description of what the app does:
+https://leaf-plaster-398.notion.site/SPL-Token-Miniting-App-b438f6f8497f41c1b92e925ea45021f4
